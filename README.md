@@ -228,3 +228,267 @@ Key concepts covered:
 * How applications interact with AI models
 * API vs Web Interface
 * Building AI-powered applications using the OpenAI API
+
+
+
+# 1. Making Requests to the OpenAI API
+
+Welcome back! In this lesson, we'll learn how to make requests to the OpenAI API.
+
+---
+
+# 2. API Endpoints
+
+Depending on the model or service required, APIs provide different access points for users.
+
+These access points are called **endpoints**.
+
+---
+
+# 3. Understanding API Endpoints
+
+Endpoints can be compared to doors in a hospital.
+
+Depending on the treatment required, patients use different doors to access different departments.
+
+Similarly, developers send requests to different API endpoints depending on the service they want to use.
+
+### Examples
+
+| Endpoint         | Purpose                           |
+| ---------------- | --------------------------------- |
+| Chat Completions | Conversational AI                 |
+| Embeddings       | Semantic search and similarity    |
+| Images           | Image generation and editing      |
+| Audio            | Speech-to-text and text-to-speech |
+
+---
+
+# 4. API Authentication
+
+Many API endpoints require authentication before users can access services.
+
+Authentication is typically performed using an **API Key**, which is a unique secret token used to verify your identity.
+
+### Why Authentication Is Important
+
+* Protects API resources
+* Tracks usage
+* Applies permissions and limits
+* Enables billing and monitoring
+
+---
+
+# 5. API Usage Costs
+
+Many APIs, including the OpenAI API, have costs associated with their usage.
+
+For OpenAI, pricing is generally based on:
+
+* The model being used
+* Input size (tokens sent)
+* Output size (tokens generated)
+
+### Important Note
+
+During this course, the environment is configured so that you can make API requests without incurring any charges.
+
+For production applications, always review the latest pricing information before deployment.
+
+---
+
+# 6. Creating an API Key
+
+Although creating an API key is not required for this course, you will need one for your own projects.
+
+### Steps
+
+1. Create an OpenAI account
+2. Navigate to the API Keys section
+3. Generate a new secret key
+4. Store the key securely
+5. Add billing information if required
+
+### Security Best Practices
+
+* Never commit API keys to Git repositories
+* Use environment variables
+* Rotate keys regularly
+* Limit access where possible
+
+---
+
+# 7. Making a Request
+
+There are several ways to interact with an API, but in this course we will use OpenAI's official Python library.
+
+### Step 1: Import the OpenAI Client
+
+```python
+from openai import OpenAI
+```
+
+### Step 2: Create a Client
+
+```python
+client = OpenAI(
+    api_key="YOUR_API_KEY"
+)
+```
+
+The client manages communication with the OpenAI API.
+
+### Step 3: Send a Request
+
+```python
+response = client.chat.completions.create(
+    model="gpt-4.1",
+    messages=[
+        {
+            "role": "user",
+            "content": "Define the OpenAI API."
+        }
+    ]
+)
+```
+
+### Request Components
+
+| Parameter | Description                            |
+| --------- | -------------------------------------- |
+| model     | The AI model to use                    |
+| messages  | Conversation history sent to the model |
+| role      | Identifies who sent the message        |
+| content   | Actual prompt text                     |
+
+---
+
+# 8. Understanding the Response
+
+The API returns a **ChatCompletion** object containing various pieces of information.
+
+### Common Response Attributes
+
+```text
+response
+├── id
+├── created
+├── model
+├── choices
+└── usage
+```
+
+The generated response is typically found inside the **choices** collection.
+
+---
+
+# 9. Interpreting the Response
+
+To access the model's reply, start by examining the `choices` attribute.
+
+```python
+response.choices
+```
+
+This returns a list of generated responses.
+
+Since there is usually only one response, access the first element:
+
+```python
+response.choices[0]
+```
+
+This returns a **Choice** object.
+
+---
+
+# 10. Extracting the Message
+
+The generated message is stored inside the `message` attribute.
+
+```python
+response.choices[0].message
+```
+
+This returns a **ChatCompletionMessage** object.
+
+---
+
+# 11. Extracting the Content
+
+Finally, access the `content` attribute to retrieve the generated text.
+
+```python
+response.choices[0].message.content
+```
+
+Example:
+
+```python
+print(response.choices[0].message.content)
+```
+
+Output:
+
+```text
+The OpenAI API provides developers with programmatic access to OpenAI's AI models.
+```
+
+### Full Example
+
+```python
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_API_KEY")
+
+response = client.chat.completions.create(
+    model="gpt-4.1",
+    messages=[
+        {
+            "role": "user",
+            "content": "Define the OpenAI API."
+        }
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+---
+
+# 12. Summary
+
+In this lesson, you learned:
+
+* What API endpoints are
+* How API authentication works
+* How API pricing is structured
+* How to create an API key
+* How to make requests using the OpenAI Python SDK
+* How to interpret API responses
+* How to extract generated content from a response object
+
+### Request Flow
+
+```text
+Application
+      ↓
+OpenAI Client
+      ↓
+API Request
+      ↓
+OpenAI Model
+      ↓
+Response Object
+      ↓
+Extract Content
+      ↓
+Display Result
+```
+
+---
+
+# 13. Next Step
+
+Now it's time to start making your own API requests and experimenting with different prompts and models.
+
